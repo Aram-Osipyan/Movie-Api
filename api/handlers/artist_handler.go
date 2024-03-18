@@ -13,6 +13,9 @@ func (h *ArtistHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	fmt.Println("ARTISTS#" + r.Method)
 	switch {
+	case r.Method == http.MethodGet:
+
+		return
 	case r.Method == http.MethodPost:
 		artist.Create(w, r)
 		return

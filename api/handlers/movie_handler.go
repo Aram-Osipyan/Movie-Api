@@ -4,23 +4,23 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Movie-Api/handlers/artist"
+	"github.com/Movie-Api/handlers/movie"
 )
 
 type MovieHandler struct{}
 
 func (h *MovieHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
-	fmt.Println("ARTISTS#" + r.Method)
+	fmt.Println("MOVIES#" + r.Method)
 	switch {
-	case r.Method == http.MethodPost:
-		artist.Create(w, r)
+	case r.Method == http.MethodGet:
+		movie.Get(w, r)
 		return
-	case r.Method == http.MethodPatch:
-		artist.Update(w, r)
+	case r.Method == http.MethodPost:
+		movie.Create(w, r)
 		return
 	case r.Method == http.MethodDelete:
-		artist.Delete(w, r)
+		movie.Delete(w, r)
 		return
 	default:
 		w.WriteHeader(http.StatusNotFound)

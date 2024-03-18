@@ -22,8 +22,11 @@ func main() {
 	mux.Handle("/api/users/login", &handlers.LoginHandler{})
 	mux.Handle("/api/artists", middlewares.AuthMiddleware(&handlers.ArtistHandler{}))
 	mux.Handle("/api/artists/{id}", middlewares.AuthMiddleware(&handlers.ArtistHandler{}))
+	mux.Handle("/api/movies", middlewares.AuthMiddleware(&handlers.MovieHandler{}))
+	mux.Handle("/api/movies/{id}", middlewares.AuthMiddleware(&handlers.ArtistHandler{}))
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("jopa"))
+		w.Write([]byte("server is running"))
 	})
 	// Run the server
 	http.ListenAndServe(":8080", mux)

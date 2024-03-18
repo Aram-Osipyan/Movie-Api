@@ -51,7 +51,7 @@ func (repository *ArtistRepository) Update(id string, name, sex string, birth_da
 		return nil, err
 	}
 
-	fmt.Println("new artist created")
+	fmt.Println("artist updated")
 
 	artist := models.Artist{Name: name, Sex: sex, BirthDate: birth_date}
 
@@ -68,16 +68,21 @@ func (repository *ArtistRepository) Delete(id string) error {
 	if err != nil {
 		return err
 	}
-
-	_, err = db.Query("DELETE from artists WHERE id = $1;", id)
 	defer db.Close()
 
-	if err != nil {
-		fmt.Println("query error: ", err)
-		return err
+	queries := []string{
+		"DELETE from artists WHERE id = $1;",
+		"DELETE from movie_artists WHERE artist_id = $1;",
 	}
 
-	fmt.Println("new artist removed")
+	for _, query := range queries {
+		if _, err := db.Query(query, id); err != nil {
+			fmt.Println("query error: ", err)
+			return err
+		}
+	}
+
+	fmt.Println("movie removed")
 
 	return nil
 }

@@ -8,4 +8,5 @@ type Movie struct {
 	Description string    `json:"description"`
 	Rating      float32   `json:"rating"`
 	ReleaseDate time.Time `json:release_date`
+	Artists     []Artist  `json:artists`
 }

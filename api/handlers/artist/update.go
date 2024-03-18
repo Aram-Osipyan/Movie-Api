@@ -15,7 +15,7 @@ type updateRequest struct {
 	BirthDate string `json:"birth_date"`
 }
 
-type UpdateResponse struct {
+type updateResponse struct {
 	Id        int       `json:"id"`
 	Name      string    `json:"name"`
 	Sex       string    `json:"sex"`
@@ -51,7 +51,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := createResponse{
+	response := updateResponse{
 		Id:        artist.Id,
 		Name:      artist.Name,
 		Sex:       artist.Sex,
