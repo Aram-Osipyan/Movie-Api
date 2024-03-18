@@ -16,10 +16,12 @@ func main() {
 	run_init_sql()
 
 	mux := http.NewServeMux()
+
 	// Register the routes and handlers
 	mux.Handle("/api/users", &handlers.UserHandler{})
 	mux.Handle("/api/users/login", &handlers.LoginHandler{})
-	mux.Handle("/api/artists", middlewares.AuthMiddleware(&handlers.LoginHandler{}))
+	mux.Handle("/api/artists", middlewares.AuthMiddleware(&handlers.ArtistHandler{}))
+	mux.Handle("/api/artists/{id}", middlewares.AuthMiddleware(&handlers.ArtistHandler{}))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("jopa"))
 	})

@@ -4,15 +4,16 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/Movie-Api/models"
 	"github.com/Movie-Api/repositories"
 )
 
-type request struct {
+type createRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type response struct {
+type createResponse struct {
 	Id       int    `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -20,23 +21,29 @@ type response struct {
 }
 
 func Create(w http.ResponseWriter, r *http.Request) {
-	var req request
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
+	var req createRequest
+	var err error
+
+	if err = json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return
 	}
 
 	user_repository := new(repositories.UserRepository)
-	user, err := user_repository.Create(req.Username, req.Password, "user")
 
-	if err != nil {
+	var user *models.User
+	if user, err = user_repository.Create(req.Username, req.Password, "user"); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	err = json.NewEncoder(w).Encode(user)
+	response := createResponse{
+		Id:       user.Id,
+		Username: user.Username,
+		Password: user.Password,
+		Role:     user.Role,
+	}
 
-	if err != nil {
+	if err = json.NewEncoder(w).Encode(response); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

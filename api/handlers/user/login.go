@@ -39,7 +39,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["exp"] = time.Now().Add(10 * time.Minute)
+	claims["expiration"] = time.Now().Add(time.Hour)
 	claims["role"] = user.Role
 	claims["user_id"] = user.Id
 

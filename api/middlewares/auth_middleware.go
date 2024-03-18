@@ -2,8 +2,8 @@ package middlewares
 
 import (
 	"context"
+	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -23,14 +23,15 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		if err != nil || !token.Valid {
 			w.WriteHeader(http.StatusForbidden)
+			w.Write([]byte(fmt.Sprintf("err ", err, "token: ", token)))
 			return
 		}
 
 		claims := token.Claims.(jwt.MapClaims)
-		if time.Now().Before(claims["exp"].(time.Time)) {
-			w.WriteHeader(http.StatusGatewayTimeout)
-			return
-		}
+		// if time.Now().Before(claims["expiration"].(time.Time)) {
+		// 	w.WriteHeader(http.StatusGatewayTimeout)
+		// 	return
+		// }
 
 		ctx := context.WithValue(r.Context(), "role", claims["role"].(string))
 		next.ServeHTTP(w, r.WithContext(ctx))

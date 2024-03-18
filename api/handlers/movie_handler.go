@@ -7,9 +7,9 @@ import (
 	"github.com/Movie-Api/handlers/artist"
 )
 
-type ArtistHandler struct{}
+type MovieHandler struct{}
 
-func (h *ArtistHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *MovieHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	fmt.Println("ARTISTS#" + r.Method)
 	switch {

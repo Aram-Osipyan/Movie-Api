@@ -9,25 +9,21 @@ import (
 	"github.com/Movie-Api/repositories"
 )
 
-type createRequest struct {
+type updateRequest struct {
 	Name      string `json:"name"`
 	Sex       string `json:"sex"`
 	BirthDate string `json:"birth_date"`
 }
 
-type createResponse struct {
+type UpdateResponse struct {
 	Id        int       `json:"id"`
 	Name      string    `json:"name"`
 	Sex       string    `json:"sex"`
 	BirthDate time.Time `json:"birth_date"`
 }
 
-type errorResponse struct {
-	Error string `json:"error"`
-}
-
-func Create(w http.ResponseWriter, r *http.Request) {
-	var req createRequest
+func Update(w http.ResponseWriter, r *http.Request) {
+	var req updateRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return
@@ -48,8 +44,9 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var id string = r.PathValue("id")
 	var artist *models.Artist
-	if artist, err = repository.Create(req.Name, req.Sex, date); err != nil {
+	if artist, err = repository.Update(id, req.Name, req.Sex, date); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

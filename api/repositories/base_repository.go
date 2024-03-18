@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"fmt"
 	"os"
 )
 
@@ -13,5 +14,6 @@ func (r *BaseRepository) GetConnection() (*sql.DB, error) {
 
 	db, err := sql.Open("postgres", connection_string)
 
+	fmt.Println("db connection created")
 	return db, err
 }
